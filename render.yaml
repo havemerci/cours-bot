@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: assure
+    runtime: docker
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: TOKEN
+        sync: false
+      - key: DB_URL
+        sync: false
+      - key: DB_KEY
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: PREFIX
+        value: ";"
+      - key: PRESENCE
+        value: "true"
+      - key: NODE_ENV
+        value: production
