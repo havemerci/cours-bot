@@ -15,7 +15,6 @@ import { ChatActivityManager } from "./chat-activities/manager.js";
 import { parseCommand } from "./commands/input.js";
 import { config } from "./config.js";
 import { GameManager } from "./games/manager.js";
-import { MafiaManager } from "./games/mafia/manager.js";
 import { MessageGuard, type GuardDecision } from "./guards.js";
 import { HelpManager } from "./help.js";
 import { logger } from "./logger.js";
@@ -76,7 +75,6 @@ export async function startBot(): Promise<BotRuntime> {
   });
   const guard = new MessageGuard(config.PREFIX);
   const games = new GameManager(client, economy);
-  const mafia = new MafiaManager(client, economy);
   const casino = new CasinoManager(economy);
   const blackjack = new BlackjackManager(client, economy);
   const automations = new AutomationManager(client, economy, guard);
@@ -91,7 +89,7 @@ export async function startBot(): Promise<BotRuntime> {
   });
 
   client.on(Events.MessageCreate, (message) => {
-    void handleMessage(message, economy, games, mafia, casino, blackjack, automations, help, guard, restartCache);
+    void handleMessage(message, economy, games, casino, blackjack, automations, help, guard, restartCache);
   });
 
   client.on(Events.Error, (error) => {
@@ -100,7 +98,6 @@ export async function startBot(): Promise<BotRuntime> {
 
   await client.login(config.TOKEN);
   await games.refundExpired();
-  await mafia.start();
   blackjack.start();
   automations.start();
   await restartCache.complete(client).catch((error) => {
@@ -114,7 +111,6 @@ export async function startBot(): Promise<BotRuntime> {
       clearInterval(cleanupTimer);
       guard.stop();
       chatActivities.stop();
-      mafia.stop();
       blackjack.stop();
       await automations.stop();
       await restartCache.stop();
@@ -126,7 +122,6 @@ async function handleMessage(
   message: Message,
   economy: EconomyService,
   games: GameManager,
-  mafia: MafiaManager,
   casino: CasinoManager,
   blackjack: BlackjackManager,
   automations: AutomationManager,
@@ -187,7 +182,6 @@ async function handleMessage(
     }
 
     if (await help.handle(message)) return;
-    if (await mafia.handle(message, config.PREFIX)) return;
     if (await blackjack.handle(message, config.PREFIX)) return;
     if (await casino.handle(message, config.PREFIX)) return;
     const command = parseCommand(message.content, config.PREFIX);
