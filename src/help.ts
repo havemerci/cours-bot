@@ -19,7 +19,8 @@ type HelpPage = "home" | "earn" | "games" | "casino" | "rewards";
 const pageAliases: Record<string, HelpPage> = {
   home: "home", overview: "home", commands: "home",
   earn: "earn", economy: "earn", balance: "earn", daily: "earn", fish: "earn", pray: "earn", mine: "earn", salvage: "earn", lb: "earn",
-  games: "games", game: "games", give: "games", ttt: "games", c4: "games",
+  games: "games", game: "games", give: "games", ttt: "games", c4: "games", mafia: "games", mafialb: "games",
+  mafiastats: "games", mafiahistory: "games", stats: "games", history: "games",
   casino: "casino", bet: "casino", coinflip: "casino", roulette: "casino", slots: "casino", blackjack: "casino", bj: "casino",
   rewards: "rewards", boost: "rewards", bump: "rewards", activity: "rewards", msglb: "rewards",
   flag: "rewards", anime: "rewards", chat: "rewards", ping: "rewards", restart: "rewards",
@@ -61,9 +62,24 @@ function pageContent(page: HelpPage, prefix: string): string {
     "-# Leave out the amount for a free game. Wagers require at least 2,500 per player.",
     "-# The opponent must accept. Both stakes are reserved; the winner takes the opponent's stake. Draws and timeouts refund both players.",
     "",
+    `\`${prefix}mafia\` · Start a 5–12 player social deduction lobby`,
+    "-# Everyone readies up before the host starts. Settings control timing, roles, reveals, Doctor rules, revives, and vote privacy.",
+    "-# Night choices are private. Three consecutive missed actions or votes cause an AFK elimination.",
+    "-# Detective investigations create odd/even Mafia-count clues for overlapping groups; previous clues stay in a private notebook.",
+    "-# Doctors protect living players or revive eliminated players. Speaking access returns after revival or when the game ends.",
+    "-# Night lasts 60 seconds, discussion lasts two minutes, and voting lasts 60 seconds. Tied votes eliminate nobody.",
+    `\`${prefix}mafialb\` · View the server's Mafia wins leaderboard and your rank`,
+    `\`${prefix}mafiastats [@user]\` · Detailed record, streaks, and achievements`,
+    `\`${prefix}mafia history\` · Recent matches with private action recaps`,
+    "-# Players receive 250 Assurite; winners receive 1,000 total. Mafia rewards are capped at 2,500 per UTC day.",
+    "",
     "**Examples**",
     `> ${prefix}ttt @ilybabemwah`,
     `> ${prefix}c4 @ilybabemwah 10,000`,
+    `> ${prefix}mafia`,
+    `> ${prefix}mafialb`,
+    `> ${prefix}mafiastats @ilybabemwah`,
+    `> ${prefix}mafia history`,
   ].join("\n");
 
   if (page === "casino") return [
@@ -108,7 +124,7 @@ function pageContent(page: HelpPage, prefix: string): string {
     `\`${prefix}setbalance @user amount\` · Set an exact balance`,
     `\`${prefix}freeze @user\` · Freeze or unfreeze an account`,
     `\`${prefix}economy audit @user\` · View recent administrative changes`,
-    "-# Economy administration is restricted to the two configured owners and every change is audited.",
+    "-# Economy administration is restricted to cour",
     "",
     "Messages are counted Monday–Sunday in UTC. After the week closes, the most active member receives <@&1554082572739551262>.",
   ].join("\n");
