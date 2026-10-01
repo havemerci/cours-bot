@@ -78,7 +78,7 @@ function pageContent(page: HelpPage, prefix: string): string {
     `> ${prefix}c4 @ilybabemwah 10,000`,
     `> ${prefix}mafia`,
     `> ${prefix}mafialb`,
-    `> ${prefix}mafiastats @iminbliss`,
+    `> ${prefix}mafiastats @ilybabemwah`,
     `> ${prefix}mafia history`,
   ].join("\n");
 
